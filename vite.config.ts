@@ -5,7 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig(({ isSsrBuild }) => ({
   plugins: [reactRouter(), tsconfigPaths()],
   server: {
-    allowedHosts: ['.localhost', 'mosifer.barsnes.dev'],
+    allowedHosts: ['localhost', 'mosifer.barsnes.dev'],
   },
   optimizeDeps: {
     esbuildOptions: isSsrBuild
