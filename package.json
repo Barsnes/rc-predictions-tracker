@@ -68,7 +68,7 @@
     "@matstack/remix-adonisjs": "1.0.0",
     "@react-router/node": "^7.0.0",
     "@react-router/serve": "^7.0.0",
-    "@vinejs/vine": "^2.1.0",
+    "@vinejs/vine": "^3.0.1",
     "better-sqlite3": "^11.8.1",
     "edge.js": "^6.2.0",
     "isbot": "^5.1.17",
