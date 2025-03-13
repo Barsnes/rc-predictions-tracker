@@ -41,7 +41,7 @@ export default defineConfig({
     () => import('@matstack/remix-adonisjs/remix_provider'),
     () => import('#providers/service_provider'),
     () => import('@adonisjs/lucid/database_provider'),
-    () => import('@adonisjs/auth/auth_provider')
+    () => import('@adonisjs/auth/auth_provider'),
   ],
 
   /*

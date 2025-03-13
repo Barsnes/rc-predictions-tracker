@@ -1,5 +1,4 @@
 import { ActionFunctionArgs, Form, LoaderFunctionArgs, redirect, useLoaderData } from 'react-router'
-import { Welcome } from '../welcome/welcome'
 import type { Route } from './+types/_index'
 
 export function meta({}: Route.MetaArgs) {

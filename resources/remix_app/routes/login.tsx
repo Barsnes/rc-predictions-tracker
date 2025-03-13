@@ -1,6 +1,4 @@
 import {
-  useActionData,
-  useLoaderData,
   isRouteErrorResponse,
   useRouteError,
   Form,
@@ -11,7 +9,7 @@ import {
 import { Route } from './+types/login'
 
 export async function loader({ context }: Route.LoaderArgs) {
-  const { http, make } = context
+  const { http } = context
   return {
     message: 'Hello from ' + http.request.completeUrl(),
   }
