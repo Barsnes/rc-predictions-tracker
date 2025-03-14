@@ -1,4 +1,4 @@
-import { defineConfig } from '@adonisjs/core/app';
+import { defineConfig } from '@adonisjs/core/app'
 
 export default defineConfig({
   /*
@@ -42,6 +42,7 @@ export default defineConfig({
     () => import('#providers/service_provider'),
     () => import('@adonisjs/lucid/database_provider'),
     () => import('@adonisjs/auth/auth_provider'),
+    () => import('@adonisjs/ally/ally_provider')
   ],
 
   /*
@@ -92,4 +93,4 @@ export default defineConfig({
   hooks: {
     onBuildStarting: [() => import('@matstack/remix-adonisjs/build_hook')],
   },
-});
+})

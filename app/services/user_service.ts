@@ -1,19 +1,22 @@
 import User from '#models/user';
-import hash from '@adonisjs/core/services/hash';
 
 export default class UserService {
-  async createUser(props: { email: string; password: string }) {
+  async createUser(props: {
+    email: string;
+    nickName: string;
+    id: string;
+    avatarUrl?: string;
+  }) {
     return await User.create({
+      id: parseInt(props.id),
       email: props.email,
-      password: props.password,
+      username: props.nickName,
+      avatar: props.avatarUrl,
     });
   }
 
   async getUser(email: string) {
+    console.log({ email });
     return await User.findBy('email', email);
-  }
-
-  async verifyPassword(user: User, password: string) {
-    return hash.verify(user.password, password);
   }
 }

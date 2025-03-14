@@ -1,3 +1,4 @@
+import { Avatar, Button, Paragraph } from '@digdir/designsystemet-react';
 import {
   type ActionFunctionArgs,
   Form,
@@ -8,8 +9,8 @@ import {
 
 export function meta() {
   return [
-    { title: 'New React Router App' },
-    { name: 'description', content: 'Welcome to React Router!' },
+    { title: 'rc-predictions-tracker' },
+    { name: 'description', content: 'Webapp to track RC predictions.' },
   ];
 }
 
@@ -25,22 +26,29 @@ export const action = async ({ context }: ActionFunctionArgs) => {
 };
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
-  const email = context.http.auth.user?.email;
+  const user = context.http.auth.user?.$attributes;
 
   return {
-    email,
+    user,
   };
 };
 
 export default function Index() {
-  const { email } = useLoaderData<typeof loader>();
+  const { user } = useLoaderData<typeof loader>();
+
+  console.log({ user });
 
   return (
-    <div className='container'>
-      <p>Logged in as {email}</p>
+    <div>
+      <Avatar aria-label='User avatar'>
+        <img src={user.avatar} alt='user avatar' />
+      </Avatar>
+      <Paragraph>
+        Logged in as {user.username}, with email {user.email}
+      </Paragraph>
       <Form method='POST'>
         <input type='hidden' name='intent' value={'log_out'} />
-        <button type={'submit'}>Log out</button>
+        <Button type={'submit'}>Log out</Button>
       </Form>
     </div>
   );

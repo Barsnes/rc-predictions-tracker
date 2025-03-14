@@ -1,81 +1,14 @@
-import {
-  Button,
-  Card,
-  Fieldset,
-  Heading,
-  Link,
-  Paragraph,
-  Textfield,
-  ValidationMessage,
-} from '@digdir/designsystemet-react';
-import {
-  type ActionFunctionArgs,
-  Form,
-  Link as RemixLink,
-  isRouteErrorResponse,
-  redirect,
-  useRouteError,
-} from 'react-router';
-import type { Route } from './+types/login';
+import { Button, Card, Heading, Link } from '@digdir/designsystemet-react';
+import { isRouteErrorResponse, useRouteError } from 'react-router';
 
-export const action = async ({ context }: ActionFunctionArgs) => {
-  const { http, make } = context;
-  const { email, password } = http.request.only(['email', 'password']);
-
-  const userService = await make('user_service');
-  const user = await userService.getUser(email);
-
-  if (!user) {
-    return { error: 'Invalid credentials' };
-  }
-
-  if (!(await userService.verifyPassword(user, password))) {
-    return { error: 'Invalid credentials' };
-  }
-
-  await http.auth.use('web').login(user);
-  return redirect('/');
-};
-
-export default function Page({ actionData }: Route.ComponentProps) {
+export default function Page() {
   return (
     <Card data-color='lilla'>
       <Card.Block>
         <Heading level={1}>Log in</Heading>
-      </Card.Block>
-      <Card.Block>
-        <Form
-          method='post'
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'var(--ds-size-4)',
-          }}
-        >
-          <Fieldset>
-            <Textfield type='email' name='email' label='Email' required />
-            <Textfield
-              type='password'
-              name='password'
-              label='Password'
-              required
-            />
-            {actionData?.error && (
-              <ValidationMessage>
-                {actionData?.error && <>{actionData.error}</>}
-              </ValidationMessage>
-            )}
-          </Fieldset>
-          <Button type='submit'>Login</Button>
-        </Form>
-      </Card.Block>
-      <Card.Block>
-        <Paragraph>
-          Don't have an account yet?{' '}
-          <Link asChild>
-            <RemixLink to={'/register'}>Click here to sign up</RemixLink>
-          </Link>
-        </Paragraph>
+        <Button variant='secondary' type='button' asChild>
+          <Link href={'/auth/discord/redirect'}>Log in with Discord</Link>
+        </Button>
       </Card.Block>
     </Card>
   );
