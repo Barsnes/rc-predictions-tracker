@@ -5,7 +5,6 @@ import {
   Link as RemixLink,
   ActionFunctionArgs,
   redirect,
-  useActionData, // Add this import
 } from 'react-router'
 import { Route } from './+types/login'
 import {

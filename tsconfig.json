@@ -4,7 +4,11 @@
   "compilerOptions": {
     "rootDirs": ["./", "./.react-router/types"],
     "rootDir": "./",
-    "types": ["@react-router/node", "vite/client"],
+    "types": [
+      "@react-router/node",
+      "vite/client",
+      "./resources/remix_app/design-tokens-build/colors.d.ts"
+    ],
     "outDir": "./build",
     "module": "ES2022",
     "moduleResolution": "bundler",
