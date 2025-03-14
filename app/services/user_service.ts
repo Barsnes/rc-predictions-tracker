@@ -10,7 +10,7 @@ export default class UserService {
   }
 
   async getUser(email: string) {
-    return await User.findByOrFail('email', email)
+    return await User.findBy('email', email)
   }
 
   async verifyPassword(user: User, password: string) {

@@ -32,6 +32,10 @@ export const action = async ({ context }: ActionFunctionArgs) => {
   const userService = await make('user_service')
   const user = await userService.getUser(email)
 
+  if (!user) {
+    return { error: 'Invalid credentials' }
+  }
+
   if (!(await userService.verifyPassword(user, password))) {
     return { error: 'Invalid credentials' }
   }
@@ -41,8 +45,6 @@ export const action = async ({ context }: ActionFunctionArgs) => {
 }
 
 export default function Page({ actionData }: Route.ComponentProps) {
-  console.log('actionData', actionData)
-
   return (
     <Card data-color="lilla">
       <Card.Block>
