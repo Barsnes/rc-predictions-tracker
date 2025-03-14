@@ -76,9 +76,9 @@ export default function Page({ actionData }: Route.ComponentProps) {
       </Card.Block>
       <Card.Block>
         <Paragraph>
-          Don't have an account yet?{' '}
+          Already have an account?{' '}
           <Link asChild>
-            <RemixLink to={'/register'}>Click here to sign up</RemixLink>
+            <RemixLink to={'/login'}>Click here to log in</RemixLink>
           </Link>
         </Paragraph>
       </Card.Block>

@@ -25,6 +25,5 @@ yarn-error.log
 .DS_Store
 
 vite.config.*.timestamp-*
-package-lock.json
 
 .react-router/
