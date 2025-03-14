@@ -2,11 +2,22 @@ import {
   isRouteErrorResponse,
   useRouteError,
   Form,
-  Link,
+  Link as RemixLink,
   ActionFunctionArgs,
   redirect,
+  useActionData, // Add this import
 } from 'react-router'
 import { Route } from './+types/login'
+import {
+  Button,
+  Card,
+  Fieldset,
+  Heading,
+  Link,
+  Paragraph,
+  Textfield,
+  ValidationMessage,
+} from '@digdir/designsystemet-react'
 
 export async function loader({ context }: Route.LoaderArgs) {
   const { http } = context
@@ -16,43 +27,55 @@ export async function loader({ context }: Route.LoaderArgs) {
 }
 export const action = async ({ context }: ActionFunctionArgs) => {
   const { http, make } = context
-  // get the form email and password
   const { email, password } = http.request.only(['email', 'password'])
 
   const userService = await make('user_service')
-  // look up the user by email
   const user = await userService.getUser(email)
 
-  // check if the password is correct
-  await userService.verifyPassword(user, password)
+  if (!(await userService.verifyPassword(user, password))) {
+    return { error: 'Invalid credentials' }
+  }
 
-  // log in user since they passed the check
   await http.auth.use('web').login(user)
-
   return redirect('/')
 }
 
-export default function Page() {
+export default function Page({ actionData }: Route.ComponentProps) {
+  console.log('actionData', actionData)
+
   return (
-    <div className="container">
-      <article>
-        <h1>Log in</h1>
-        <Form method="post">
-          <label>
-            Email
-            <input type="email" name="email" />
-          </label>
-          <label>
-            Password
-            <input type="password" name="password" />
-          </label>
-          <button type="submit">Login</button>
-          <p>
-            Don't have an account yet? <Link to={'/register'}>Click here to sign up</Link>
-          </p>
+    <Card data-color="lilla">
+      <Card.Block>
+        <Heading level={1}>Log in</Heading>
+      </Card.Block>
+      <Card.Block>
+        <Form
+          method="post"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'var(--ds-size-4)',
+          }}
+        >
+          <Fieldset>
+            <Textfield type="email" name="email" label="Email" required />
+            <Textfield type="password" name="password" label="Password" required />
+            {actionData?.error && (
+              <ValidationMessage>{actionData?.error && <>{actionData.error}</>}</ValidationMessage>
+            )}
+          </Fieldset>
+          <Button type="submit">Login</Button>
         </Form>
-      </article>
-    </div>
+      </Card.Block>
+      <Card.Block>
+        <Paragraph>
+          Don't have an account yet?{' '}
+          <Link asChild>
+            <RemixLink to={'/register'}>Click here to sign up</RemixLink>
+          </Link>
+        </Paragraph>
+      </Card.Block>
+    </Card>
   )
 }
 

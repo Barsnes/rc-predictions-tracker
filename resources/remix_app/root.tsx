@@ -1,20 +1,20 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 
 import type { Route } from './+types/root'
-import stylesheet from './app.css?url'
+import stylesheet from '@digdir/designsystemet-css?url'
+import theme from './design-tokens-build/mosifer-theme.css?url'
+import app from './app.css?url'
 
 export const links: Route.LinksFunction = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
+  { rel: 'stylesheet', href: theme },
+  { rel: 'stylesheet', href: stylesheet },
+  { rel: 'stylesheet', href: app },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+    href: 'https://altinncdn.no/fonts/inter/v4.1/inter.css',
+    integrity: 'sha384-OcHzc/By/OPw9uJREawUCjP2inbOGKtKb4A/I2iXxmknUfog2H8Adx71tWVZRscD',
+    crossOrigin: 'anonymous',
   },
-  { rel: 'stylesheet', href: stylesheet },
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -25,13 +25,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-        />
       </head>
-      <body>
-        {children}
+      <body data-size="sm" data-color-scheme="dark">
+        <div
+          style={{
+            padding: 'var(--ds-size-8)',
+          }}
+        >
+          {children}
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>

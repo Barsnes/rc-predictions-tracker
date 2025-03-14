@@ -52,7 +52,6 @@
     "pino-pretty": "^13.0.0",
     "postcss": "^8.4.49",
     "prettier": "^3.3.3",
-    "tailwindcss": "^3.4.15",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
@@ -65,6 +64,8 @@
     "@adonisjs/shield": "^8.1.1",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^3.0.0",
+    "@digdir/designsystemet-css": "^1.0.2",
+    "@digdir/designsystemet-react": "^1.0.2",
     "@matstack/remix-adonisjs": "1.0.0",
     "@react-router/node": "^7.0.0",
     "@react-router/serve": "^7.0.0",
