@@ -1,18 +1,36 @@
 import {
+  Button,
+  Card,
+  Fieldset,
+  Heading,
+  Link,
+  Paragraph,
+  Textfield,
+  ValidationMessage,
+} from '@digdir/designsystemet-react';
+import {
   type ActionFunctionArgs,
   Form,
+  Link as RemixLink,
   isRouteErrorResponse,
   redirect,
   useRouteError,
 } from 'react-router';
+import type { Route } from './+types/register';
 
 export const action = async ({ context }: ActionFunctionArgs) => {
   const { http, make } = context;
   // get email and password from form data
   const { email, password } = http.request.only(['email', 'password']);
 
-  // get the UserService from the app container and create user
+  // check if the user already exists
   const userService = await make('user_service');
+  const existingUser = await userService.getUser(email);
+  if (existingUser) {
+    return { error: 'Error creating user' };
+  }
+
+  // create user
   const user = await userService.createUser({
     email,
     password,
@@ -24,24 +42,47 @@ export const action = async ({ context }: ActionFunctionArgs) => {
   return redirect('/');
 };
 
-export default function Page() {
+export default function Page({ actionData }: Route.ComponentProps) {
   return (
-    <div className='container'>
-      <h1>Register</h1>
-      <article>
-        <Form method='post'>
-          <label>
-            Email
-            <input type='email' name='email' />
-          </label>
-          <label>
-            Password
-            <input type='password' name='password' />
-          </label>
-          <button type='submit'>Register</button>
+    <Card data-color='lilla'>
+      <Card.Block>
+        <Heading level={1}>Register</Heading>
+      </Card.Block>
+      <Card.Block>
+        <Form
+          method='post'
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'var(--ds-size-4)',
+          }}
+        >
+          <Fieldset>
+            <Textfield type='email' name='email' label='Email' required />
+            <Textfield
+              type='password'
+              name='password'
+              label='Password'
+              required
+            />
+            {actionData?.error && (
+              <ValidationMessage>
+                {actionData?.error && <>{actionData.error}</>}
+              </ValidationMessage>
+            )}
+          </Fieldset>
+          <Button type='submit'>Login</Button>
         </Form>
-      </article>
-    </div>
+      </Card.Block>
+      <Card.Block>
+        <Paragraph>
+          Don't have an account yet?{' '}
+          <Link asChild>
+            <RemixLink to={'/register'}>Click here to sign up</RemixLink>
+          </Link>
+        </Paragraph>
+      </Card.Block>
+    </Card>
   );
 }
 
