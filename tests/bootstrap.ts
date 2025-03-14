@@ -1,9 +1,9 @@
-import app from '@adonisjs/core/services/app'
-import server from '@adonisjs/core/services/server'
-import testUtils from '@adonisjs/core/services/test_utils'
-import { assert } from '@japa/assert'
-import { pluginAdonisJS } from '@japa/plugin-adonisjs'
-import type { Config } from '@japa/runner/types'
+import app from '@adonisjs/core/services/app';
+import server from '@adonisjs/core/services/server';
+import testUtils from '@adonisjs/core/services/test_utils';
+import { assert } from '@japa/assert';
+import { pluginAdonisJS } from '@japa/plugin-adonisjs';
+import type { Config } from '@japa/runner/types';
 
 /**
  * This file is imported by the "bin/test.ts" entrypoint file
@@ -13,7 +13,7 @@ import type { Config } from '@japa/runner/types'
  * Configure Japa plugins in the plugins array.
  * Learn more - https://japa.dev/docs/runner-config#plugins-optional
  */
-export const plugins: Config['plugins'] = [assert(), pluginAdonisJS(app)]
+export const plugins: Config['plugins'] = [assert(), pluginAdonisJS(app)];
 
 /**
  * Configure lifecycle function to run before and after all the
@@ -25,7 +25,7 @@ export const plugins: Config['plugins'] = [assert(), pluginAdonisJS(app)]
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
   setup: [],
   teardown: [],
-}
+};
 
 /**
  * Configure suites by tapping into the test suite instance.
@@ -34,13 +34,13 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
 export const configureSuite: Config['configureSuite'] = (suite) => {
   if (['browser', 'functional', 'e2e'].includes(suite.name)) {
     return suite.setup(() => {
-      const testServer = testUtils.httpServer()
+      const testServer = testUtils.httpServer();
       server.use([
         () => import('@adonisjs/static/static_middleware'),
         () => import('@adonisjs/vite/vite_middleware'),
-      ])
+      ]);
 
-      return testServer.start()
-    })
+      return testServer.start();
+    });
   }
-}
+};

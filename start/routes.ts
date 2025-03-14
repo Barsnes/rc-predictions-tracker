@@ -7,15 +7,15 @@
 |
 */
 
-import router from '@adonisjs/core/services/router'
-import { middleware } from '#start/kernel'
+import router from '@adonisjs/core/services/router';
+import { middleware } from '#start/kernel';
 
 router
   .any('*', async ({ remixHandler }) => {
-    return remixHandler()
+    return remixHandler();
   })
   .use(
     middleware.auth({
       guards: ['web'],
-    })
-  )
+    }),
+  );
