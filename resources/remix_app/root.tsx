@@ -35,13 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body data-size='sm' data-color-scheme='dark'>
-        <div
-          style={{
-            padding: 'var(--ds-size-8)',
-          }}
-        >
-          {children}
-        </div>
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>

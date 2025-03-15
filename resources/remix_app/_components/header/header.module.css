@@ -1,0 +1,8 @@
+.header {
+  width: 100%;
+  background-color: var(--ds-color-neutral-surface-default);
+  padding: var(--ds-size-4) var(--ds-size-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -6,7 +6,7 @@ import type { NextFn } from '@adonisjs/core/types/http';
 export default class AuthMiddleware {
   redirectTo = '/login';
 
-  openRoutes = [this.redirectTo, '/register', '__manifest', '/__manifest'];
+  openRoutes = [this.redirectTo, '__manifest', '/__manifest'];
 
   async handle(
     ctx: HttpContext,
