@@ -4,4 +4,5 @@ import type { LazyService } from '#providers/service_provider';
 export const ServiceProviders = {
   discord_service: () => import('./discord_service.js'),
   user_service: () => import('./user_service.js'),
+  prediction_user_service: () => import('./prediction_user_service.js'),
 } satisfies Record<string, LazyService>;
