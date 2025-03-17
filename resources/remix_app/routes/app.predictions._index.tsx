@@ -1,4 +1,4 @@
-import { Card, Heading, Paragraph } from '@digdir/designsystemet-react';
+import { Details, Heading, Paragraph } from '@digdir/designsystemet-react';
 import { DateTime, type DateTime as DateTimeType } from 'luxon';
 import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
 
@@ -54,27 +54,22 @@ export default function Page() {
           notes: string;
           predictedAt: string;
         }) => (
-          <Card key={prediction.id} data-color='aqua'>
-            <Card.Block>
-              <Heading>{prediction.name}</Heading>
-            </Card.Block>
-            <Card.Block>
+          <Details key={prediction.id}>
+            <Details.Summary>{prediction.name}</Details.Summary>
+            <Details.Content>
               <Heading data-size='xs'>Notes</Heading>
               <Paragraph>{prediction.notes}</Paragraph>
-            </Card.Block>
-            <Card.Block>
+
               <Heading data-size='xs'>Proof</Heading>
               <Paragraph>{prediction.proof}</Paragraph>
-            </Card.Block>
-            <Card.Block>
+
               <Heading data-size='xs'>Rating</Heading>
               <Paragraph>{prediction.rating}</Paragraph>
-            </Card.Block>
-            <Card.Block>
+
               <Heading data-size='xs'>Predicted at</Heading>
               <Paragraph>{prediction.predictedAt}</Paragraph>
-            </Card.Block>
-          </Card>
+            </Details.Content>
+          </Details>
         ),
       )}
     </div>
