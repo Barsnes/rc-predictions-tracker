@@ -5,9 +5,9 @@ import styles from './sidebar.module.css';
 const links = {
   home: { to: '/app', label: 'Home' },
   predictions: [
-    /* { to: '/app/prediction/create', label: 'Create Prediction' }, */
+    { to: '/app/predictions', label: 'All Predictions' },
+    { to: '/app/prediction/create', label: 'Create Prediction' },
     { to: '/app/predictions/users', label: 'Users' },
-    /* { to: '/app/predictions', label: 'Predictions' }, */
   ],
 };
 

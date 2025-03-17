@@ -8,7 +8,6 @@ import {
 import type { DateTime } from 'luxon';
 import {
   type ActionFunctionArgs,
-  Form,
   type LoaderFunctionArgs,
   data,
   useFetcher,
@@ -18,7 +17,7 @@ import {
 export async function loader({ context }: LoaderFunctionArgs) {
   const { make } = context;
 
-  const predictionUserService = await make('prediction_user_service');
+  const predictionUserService = await make('prediction_service');
 
   const allPredictionUsers: {
     id: number;
@@ -32,22 +31,29 @@ export async function loader({ context }: LoaderFunctionArgs) {
 
 export async function action({ context }: ActionFunctionArgs) {
   const { make, http } = context;
-  const predictionUserService = await make('prediction_user_service');
+  const predictionUserService = await make('prediction_service');
 
   const { username } = http.request.only(['username']);
 
-  const errors: { [key: string]: string } = {};
+  const errors: string[] = [];
 
   await predictionUserService
     .create_prediction_user({
       username,
     })
-    .catch(() => {
-      errors.create = 'Failed to create user';
-    });
+    .catch(
+      (e: {
+        code: string;
+      }) => {
+        if (e.code === 'ER_DUP_ENTRY') {
+          errors.push('Username already exists');
+        } else {
+          errors.push('Failed to create user');
+        }
+      },
+    );
 
   if (Object.keys(errors).length > 0) {
-    console.log('errors', errors);
     return data({ errors }, { status: 400 });
   }
 
@@ -57,7 +63,7 @@ export async function action({ context }: ActionFunctionArgs) {
 export default function Page() {
   const fetcher = useFetcher();
   const prediction_users = useLoaderData<typeof loader>();
-  const errors = fetcher.data;
+  const { errors }: { errors: string[] } = fetcher.data || [];
 
   console.log(errors);
 
@@ -70,16 +76,17 @@ export default function Page() {
       <Card data-color='aqua'>
         <Card.Block>Create user</Card.Block>
         <Card.Block>
-          <Form method='post'>
+          <fetcher.Form method='post'>
             <Textfield
               label='Username'
               name='username'
               description='This will be the name associated with a prediction user'
+              error={errors?.length > 0 ? errors[0] : undefined}
             />
             <Button type='submit' data-color='neutral'>
               Create user
             </Button>
-          </Form>
+          </fetcher.Form>
         </Card.Block>
       </Card>
 
