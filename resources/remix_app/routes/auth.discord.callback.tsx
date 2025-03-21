@@ -8,7 +8,6 @@ export async function loader({ context }: LoaderFunctionArgs) {
   const code = queryParams.split('=')[1];
 
   const discordUser = await service.getUser(code);
-  console.log('got user from discord callback:', { discordUser });
 
   const userService = await make('user_service');
   const existingUser = await userService.getUser(discordUser.email);

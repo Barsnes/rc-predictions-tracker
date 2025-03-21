@@ -28,14 +28,9 @@ export async function action({ context }: ActionFunctionArgs) {
       notes,
       predictedAt,
     })
-    .catch(
-      (e: {
-        code: string;
-      }) => {
-        console.log('error', e);
-        errors.push('Failed to create prediction');
-      },
-    );
+    .catch(() => {
+      errors.push('Failed to create prediction');
+    });
 
   if (Object.keys(errors).length > 0) {
     return data({ errors }, { status: 400 });
@@ -47,8 +42,6 @@ export async function action({ context }: ActionFunctionArgs) {
 export default function Page() {
   const fetcher = useFetcher();
   const { errors }: { errors: string[] } = fetcher.data || [];
-
-  console.log(errors);
 
   return (
     <fetcher.Form method='post'>

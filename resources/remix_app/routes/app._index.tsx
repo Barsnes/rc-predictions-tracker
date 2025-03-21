@@ -22,14 +22,11 @@ export const action = async ({ context }: ActionFunctionArgs) => {
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const user = context.http.auth.user?.$attributes;
 
-  console.log('in app loader', { user });
-
   return { user };
 };
 
 export default function Index() {
   const { user } = useLoaderData<typeof loader>();
-  console.log('in app index', { user });
 
   if (!user) {
     redirect('/');

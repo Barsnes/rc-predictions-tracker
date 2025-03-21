@@ -16,7 +16,6 @@ export default class UserService {
   }
 
   async getUser(email: string) {
-    console.log('getting user with email', email);
     return await User.findBy('email', email);
   }
 }

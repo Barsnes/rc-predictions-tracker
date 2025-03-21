@@ -9,7 +9,6 @@ import {
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const user = context.http.auth.user?.$attributes;
 
-  console.log('on index', { user });
   /**
    * If user is logged in, redirect to app
    */

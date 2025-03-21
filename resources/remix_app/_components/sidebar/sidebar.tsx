@@ -38,7 +38,6 @@ export default function Sidebar({
   };
 }) {
   const location = useLocation();
-  console.log({ location });
 
   return (
     <header className={styles.sidebar} data-color='lilla'>

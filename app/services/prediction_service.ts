@@ -28,7 +28,6 @@ export default class PredictionService {
   }
 
   async get_all_predictions() {
-    console.log('getting all predictions');
     const predictions = await Prediction.all().then((predictions) => {
       return predictions.map((prediction) => {
         return {
@@ -55,8 +54,19 @@ export default class PredictionService {
     });
   }
 
+  async delete_prediction_user(id: number) {
+    const user = await PredictionUser.find(id);
+
+    if (!user) {
+      console.log('user not found');
+      throw new Error('User not found');
+    }
+
+    await user.delete();
+    return null;
+  }
+
   async get_all_prediction_users() {
-    console.log('getting all prediction users');
     const users = await PredictionUser.all().then((users) => {
       return users.map((user) => {
         return {

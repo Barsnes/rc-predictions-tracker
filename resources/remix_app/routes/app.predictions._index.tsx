@@ -41,8 +41,6 @@ export async function loader({ context }: LoaderFunctionArgs) {
 export default function Page() {
   const data = useLoaderData<typeof loader>();
 
-  console.log('in app predictions', { data });
-
   return (
     <div>
       {data.map(

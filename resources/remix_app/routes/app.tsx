@@ -4,8 +4,6 @@ import Sidebar from '~/_components/sidebar/sidebar';
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const user = context.http.auth.user?.$attributes;
 
-  console.log('in app layout loader', { user });
-
   return user;
 };
 
