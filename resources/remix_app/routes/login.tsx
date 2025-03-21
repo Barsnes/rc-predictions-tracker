@@ -24,7 +24,6 @@ export default function Page() {
       }}
     >
       <Card
-        data-color='lilla'
         style={{
           maxWidth: '400px',
           margin: 'auto',

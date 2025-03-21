@@ -12,7 +12,7 @@ export const User = ({ id, username }: UserProps) => {
 
   return (
     <div className={classes.user}>
-      {username} (id: {id})
+      {username}
       <fetcher.Form method='post' action='/app/predictions/users/delete'>
         <input type='hidden' name='id' value={id} />
         {/* @ts-ignore */}

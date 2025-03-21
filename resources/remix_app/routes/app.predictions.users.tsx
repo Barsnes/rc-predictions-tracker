@@ -3,9 +3,11 @@ import {
   Dialog,
   Divider,
   Heading,
+  Search,
   Textfield,
 } from '@digdir/designsystemet-react';
 import type { DateTime } from 'luxon';
+import { useEffect, useState } from 'react';
 import {
   type LoaderFunctionArgs,
   useFetcher,
@@ -32,6 +34,19 @@ export default function Page() {
   const fetcher = useFetcher();
   const prediction_users = useLoaderData<typeof loader>();
   const { errors }: { errors: string[] } = fetcher.data || [];
+
+  const [users, setUsers] = useState<typeof prediction_users>([]);
+  const [search, setSearch] = useState<string>('');
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    const filteredUsers = prediction_users.filter((user) =>
+      user.username.toLowerCase().includes(search.toLowerCase()),
+    );
+    setUsers(filteredUsers);
+  }, [search, prediction_users]);
 
   return (
     <div>
@@ -70,14 +85,23 @@ export default function Page() {
 
       <Divider />
 
+      <Search
+        style={{
+          marginBottom: 'var(--ds-size-4)',
+        }}
+      >
+        <Search.Input onChange={handleSearch} value={search} />
+        <Search.Clear />
+      </Search>
+
       <div
         style={{
-          display: 'flex',
-          flexWrap: 'wrap',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, 200px)',
           gap: 'var(--ds-size-4)',
         }}
       >
-        {prediction_users.map((user) => (
+        {users.map((user) => (
           <User key={user.id} username={user.username} id={user.id} />
         ))}
       </div>

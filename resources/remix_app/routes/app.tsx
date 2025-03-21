@@ -11,7 +11,7 @@ export default function Layout() {
   const user = useLoaderData<typeof loader>();
 
   return (
-    <div className='layout-sidebar'>
+    <div className='layout-sidebar' data-color='lilla'>
       <Sidebar user={user} />
       <main>
         <Outlet />
