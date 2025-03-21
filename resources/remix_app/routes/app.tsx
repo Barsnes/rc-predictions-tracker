@@ -15,11 +15,7 @@ export default function Layout() {
   return (
     <div className='layout-sidebar'>
       <Sidebar user={user} />
-      <main
-        style={{
-          padding: 'var(--ds-size-4)',
-        }}
-      >
+      <main>
         <Outlet />
       </main>
     </div>
