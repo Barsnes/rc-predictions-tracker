@@ -9,6 +9,7 @@
   height: 100svh;
   min-width: 15vw;
   max-width: 500px;
+  max-height: 100vh;
 
   & > *:not(:last-child) {
     margin-bottom: var(--ds-size-4);
