@@ -1,5 +1,5 @@
 body {
-  --ds-bg-color: var(--ds-color-aqua-background-tinted);
+  --ds-bg-color: var(--ds-color-lilla-background-tinted);
 
   font-family: 'Inter', sans-serif;
   font-feature-settings: 'cv05' 1; /* Enable lowercase l with tail */

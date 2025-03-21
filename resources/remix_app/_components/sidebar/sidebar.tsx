@@ -1,5 +1,5 @@
 import { Avatar, Button, Heading } from '@digdir/designsystemet-react';
-import { Form, Link } from 'react-router';
+import { Form, Link, useLocation } from 'react-router';
 import styles from './sidebar.module.css';
 
 const links = {
@@ -14,12 +14,14 @@ const links = {
 const NavLink = ({
   to,
   label,
+  active = false,
 }: {
   to: string;
   label: string;
+  active?: boolean;
 }) => (
   <li>
-    <Button variant='tertiary' asChild>
+    <Button variant={active ? 'primary' : 'tertiary'} asChild>
       <Link to={to}>{label}</Link>
     </Button>
   </li>
@@ -35,8 +37,11 @@ export default function Sidebar({
     id: number;
   };
 }) {
+  const location = useLocation();
+  console.log({ location });
+
   return (
-    <header className={styles.sidebar} data-color='aqua'>
+    <header className={styles.sidebar} data-color='lilla'>
       <div className={styles.user}>
         <Avatar aria-label='User avatar' data-size='xs'>
           <img src={user.avatar} alt='user avatar' />
@@ -60,6 +65,7 @@ export default function Sidebar({
                         key={link.label}
                         to={link.to}
                         label={link.label}
+                        active={location.pathname === link.to}
                       />
                     ))}
                   </ul>
@@ -67,7 +73,12 @@ export default function Sidebar({
               );
             }
             return (
-              <NavLink key={value.label} to={value.to} label={value.label} />
+              <NavLink
+                key={value.label}
+                to={value.to}
+                label={value.label}
+                active={location.pathname === value.to}
+              />
             );
           })}
         </ul>
