@@ -8,6 +8,7 @@ import {
   Textfield,
 } from '@digdir/designsystemet-react';
 import type { DateTime } from 'luxon';
+import { useState } from 'react';
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -20,14 +21,14 @@ export async function action({ context }: ActionFunctionArgs) {
   const { make, http } = context;
   const predictionService = await make('prediction_service');
 
-  const { name, proof, rating, notes, predictedAt, prediction_user_username } =
+  const { name, proof, rating, notes, predictedAt, user_id } =
     http.request.only([
       'name',
       'proof',
       'rating',
       'notes',
       'predictedAt',
-      'prediction_user_username',
+      'user_id',
     ]);
 
   const errors: string[] = [];
@@ -39,7 +40,7 @@ export async function action({ context }: ActionFunctionArgs) {
       rating,
       notes,
       predictedAt,
-      prediction_user_username,
+      user_id: Number(user_id),
     })
     .catch(() => {
       errors.push('Failed to create prediction');
@@ -72,12 +73,26 @@ export default function Page() {
   const fetcher = useFetcher();
   const { errors }: { errors: string[] } = fetcher.data || [];
 
+  const [userId, setUserId] = useState<number | null>(null);
+
+  const handleUserSuggestionChange = (value: string) => {
+    const selectedUser = prediction_users.find(
+      (user) => user.username === value,
+    );
+    if (selectedUser) {
+      setUserId(selectedUser.id);
+    } else {
+      setUserId(null);
+    }
+  };
+
   return (
     <fetcher.Form method='post'>
       <Card data-color='aqua'>
         <Card.Block>Create prediction</Card.Block>
         <Card.Block>
           <Textfield label='Name' name='name' required />
+          <input type='hidden' name='user_id' value={userId ?? ''} required />
           <Field>
             <Label>Prediction user</Label>
             <Field.Description>Does not do anything yet</Field.Description>
@@ -86,6 +101,7 @@ export default function Page() {
                 name='prediction_user_username'
                 required
                 suppressHydrationWarning
+                onChange={(e) => handleUserSuggestionChange(e.target.value)}
               />
               <Suggestion.Clear />
               <Suggestion.List suppressHydrationWarning>

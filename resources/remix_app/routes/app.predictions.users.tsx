@@ -25,6 +25,16 @@ export async function loader({ context }: LoaderFunctionArgs) {
     username: string;
     createdAt: DateTime<boolean>;
     updatedAt: DateTime<boolean>;
+    predictions: {
+      id: number;
+      name: string;
+      proof: string;
+      rating: string;
+      notes: string;
+      predictedAt: DateTime<boolean>;
+      createdAt: DateTime<boolean>;
+      updatedAt: DateTime<boolean>;
+    }[];
   }[] = await predictionUserService.get_all_prediction_users();
 
   return allPredictionUsers;
@@ -47,6 +57,8 @@ export default function Page() {
     );
     setUsers(filteredUsers);
   }, [search, prediction_users]);
+
+  console.log(users);
 
   return (
     <div>
@@ -102,7 +114,13 @@ export default function Page() {
         }}
       >
         {users.map((user) => (
-          <User key={user.id} username={user.username} id={user.id} />
+          <User
+            key={user.id}
+            username={user.username}
+            /* @ts-ignore TODO: fix type */
+            predictions={user.predictions || []}
+            id={user.id}
+          />
         ))}
       </div>
     </div>

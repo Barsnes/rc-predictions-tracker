@@ -1,4 +1,9 @@
-import { Details, Heading, Paragraph } from '@digdir/designsystemet-react';
+import {
+  Details,
+  Divider,
+  Heading,
+  Paragraph,
+} from '@digdir/designsystemet-react';
 import { DateTime, type DateTime as DateTimeType } from 'luxon';
 import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
 
@@ -41,6 +46,8 @@ export async function loader({ context }: LoaderFunctionArgs) {
 export default function Page() {
   const data = useLoaderData<typeof loader>();
 
+  console.log(data);
+
   return (
     <div>
       {data.map(
@@ -51,20 +58,35 @@ export default function Page() {
           rating: string;
           notes: string;
           predictedAt: string;
+          predictionUser?: {
+            id: number;
+            username: string;
+            createdAt: DateTimeType<boolean>;
+            updatedAt: DateTimeType<boolean>;
+          };
         }) => (
           <Details key={prediction.id}>
             <Details.Summary>{prediction.name}</Details.Summary>
             <Details.Content>
-              <Heading data-size='xs'>Notes</Heading>
-              <Paragraph>{prediction.notes}</Paragraph>
+              <Heading data-size='2xs'>User</Heading>
+              <Paragraph>{prediction.predictionUser?.username}</Paragraph>
+              <Divider />
+              <Heading data-size='2xs'>Notes</Heading>
+              <Paragraph style={{ marginBottom: 'var(--ds-size-4)' }}>
+                {prediction.notes}
+              </Paragraph>
 
-              <Heading data-size='xs'>Proof</Heading>
-              <Paragraph>{prediction.proof}</Paragraph>
+              <Heading data-size='2xs'>Proof</Heading>
+              <Paragraph style={{ marginBottom: 'var(--ds-size-4)' }}>
+                {prediction.proof}
+              </Paragraph>
 
-              <Heading data-size='xs'>Rating</Heading>
-              <Paragraph>{prediction.rating}</Paragraph>
+              <Heading data-size='2xs'>Rating</Heading>
+              <Paragraph style={{ marginBottom: 'var(--ds-size-4)' }}>
+                {prediction.rating}
+              </Paragraph>
 
-              <Heading data-size='xs'>Predicted at</Heading>
+              <Heading data-size='2xs'>Predicted at</Heading>
               <Paragraph>{prediction.predictedAt}</Paragraph>
             </Details.Content>
           </Details>

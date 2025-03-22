@@ -5,6 +5,7 @@ import PredictionUser from '#models/prediction_user';
 export default class PredictionService {
   async create_prediction(props: {
     name: string;
+    user_id: number;
     proof: string;
     rating: string;
     notes: string;
@@ -28,21 +29,29 @@ export default class PredictionService {
   }
 
   async get_all_predictions() {
-    const predictions = await Prediction.all().then((predictions) => {
-      return predictions.map((prediction) => {
-        return {
-          id: prediction.id,
-          name: prediction.name,
-          proof: prediction.proof,
-          rating: prediction.rating,
-          notes: prediction.notes,
-          predictedAt: prediction.predictedAt,
-          finished: prediction.finished,
-          createdAt: prediction.createdAt,
-          updatedAt: prediction.updatedAt,
-        };
+    const predictions = await Prediction.query()
+      .preload('predictionUser')
+      .then((predictions) => {
+        return predictions.map((prediction) => {
+          return {
+            id: prediction.id,
+            name: prediction.name,
+            proof: prediction.proof,
+            rating: prediction.rating,
+            notes: prediction.notes,
+            predictedAt: prediction.predictedAt,
+            finished: prediction.finished,
+            createdAt: prediction.createdAt,
+            updatedAt: prediction.updatedAt,
+            predictionUser: {
+              id: prediction.predictionUser?.id,
+              username: prediction.predictionUser?.username,
+              createdAt: prediction.predictionUser?.createdAt,
+              updatedAt: prediction.predictionUser?.updatedAt,
+            },
+          };
+        });
       });
-    });
     return predictions;
   }
 
@@ -67,16 +76,31 @@ export default class PredictionService {
   }
 
   async get_all_prediction_users() {
-    const users = await PredictionUser.all().then((users) => {
-      return users.map((user) => {
-        return {
-          id: user.id,
-          username: user.username,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-        };
+    const users = await PredictionUser.query()
+      .preload('predictions')
+      .then((users) => {
+        return users.map((user) => {
+          return {
+            id: user.id,
+            username: user.username,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+            predictions: user.predictions.map((prediction) => {
+              return {
+                id: prediction.id,
+                name: prediction.name,
+                proof: prediction.proof,
+                rating: prediction.rating,
+                notes: prediction.notes,
+                predictedAt: prediction.predictedAt,
+                finished: prediction.finished,
+                createdAt: prediction.createdAt,
+                updatedAt: prediction.updatedAt,
+              };
+            }),
+          };
+        });
       });
-    });
     return users;
   }
 }
