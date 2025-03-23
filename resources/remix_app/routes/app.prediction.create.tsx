@@ -4,6 +4,7 @@ import {
   ErrorSummary,
   Field,
   Label,
+  Select,
   EXPERIMENTAL_Suggestion as Suggestion,
   Textfield,
 } from '@digdir/designsystemet-react';
@@ -13,6 +14,7 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
   data,
+  redirect,
   useFetcher,
   useLoaderData,
 } from 'react-router';
@@ -42,15 +44,24 @@ export async function action({ context }: ActionFunctionArgs) {
       predictedAt,
       user_id: Number(user_id),
     })
-    .catch(() => {
-      errors.push('Failed to create prediction');
-    });
+    .catch(
+      (e: {
+        code: string;
+      }) => {
+        console.error(e);
+        if (e.code === 'ER_NO_REFERENCED_ROW_2') {
+          errors.push('User not found');
+        } else {
+          errors.push('Failed to create prediction');
+        }
+      },
+    );
 
   if (Object.keys(errors).length > 0) {
     return data({ errors }, { status: 400 });
   }
 
-  return null;
+  return redirect('/app/predictions');
 }
 
 export async function loader({ context }: LoaderFunctionArgs) {
@@ -118,12 +129,27 @@ export default function Page() {
             </Suggestion>
           </Field>
           <Textfield label='Proof' name='proof' required />
-          <Textfield label='Rating' name='rating' required />
+          <Field>
+            <Label>Rating</Label>
+            <Select name='rating' required>
+              <Select.Option value='Very soft'>Very soft</Select.Option>
+              <Select.Option value='Soft'>Soft</Select.Option>
+              <Select.Option value='Medium soft'>Medium soft</Select.Option>
+              <Select.Option value='Medium'>Medium</Select.Option>
+              <Select.Option value='Medium Hard'>Medium Hard</Select.Option>
+              <Select.Option value='Hard'>Hard</Select.Option>
+              <Select.Option value='Very Hard'>Very Hard</Select.Option>
+              <Select.Option value='Mental Sickness'>
+                Mental Sickness
+              </Select.Option>
+            </Select>
+          </Field>
           <Textfield
             label='Notes'
             name='notes'
             description='Markdown will be supported in the future'
             required
+            multiline
           />
           <Textfield
             label='Predicted at'
