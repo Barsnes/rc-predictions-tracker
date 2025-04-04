@@ -10,7 +10,8 @@ import {
 import stylesheet from '@digdir/designsystemet-css?url';
 import type { Route } from './+types/root';
 import app from './app.css?url';
-import theme from './design-tokens-build/mosifer-theme.css?url';
+/* https://theme.designsystemet.no/themebuilder?appearance=dark&main=primary:%2390327e&neutral=%2322262c&support=lilla:%235b60ae+aqua:%235db992&border-radius=4 */
+import theme from './design-tokens-build/mosifer.css?url';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: theme },
